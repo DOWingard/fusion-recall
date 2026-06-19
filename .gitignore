@@ -16,3 +16,9 @@ dist/
 .mypy_cache/
 .venv/
 venv/
+
+# Benchmark artifacts — datasets/models are downloaded at runtime to the system
+# temp dir and the HF cache, never the repo. These guard the case where someone
+# points `--data-dir` at the working tree.
+*.zip
+fusion-recall-beir/
