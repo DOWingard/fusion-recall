@@ -40,8 +40,18 @@ Hybrid retrieval is **not a universal win** — whether it beats plain embedding
 
 ## Install
 
+Install directly from the repository:
+
 ```bash
-pip install fusion-recall
+pip install "git+https://github.com/DOWingard/fusion-recall.git"
+```
+
+Or clone and install from a local checkout:
+
+```bash
+git clone https://github.com/DOWingard/fusion-recall.git
+cd fusion-recall
+pip install .
 ```
 
 ### CPU-only torch (recommended)
@@ -51,7 +61,7 @@ pip install fusion-recall
 ```bash
 # Install the CPU torch wheel before the package:
 pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install fusion-recall
+pip install "git+https://github.com/DOWingard/fusion-recall.git"
 ```
 
 (or pass `--extra-index-url https://download.pytorch.org/whl/cpu` to a single `pip install` so the CPU wheel is preferred.)
