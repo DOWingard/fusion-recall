@@ -1,0 +1,19 @@
+.gitignore
+  s_08a38aae05907a::t_0e56ab9b887cea 19-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "70d7740cdc73ed21059898594319c918f9f823f1",
+  "prompts": {},
+  "sessions": {
+    "s_08a38aae05907a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6ddca5f2-e95e-4afa-82da-bb044e022238",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Derek Wingard <derekwingard@gmail.com>"
+    }
+  }
+}
