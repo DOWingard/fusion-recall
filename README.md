@@ -14,6 +14,28 @@ It is **vector-free by construction**: the library only ever sees query text, do
 
 ---
 
+## When to use this vs. plain embeddings
+
+Hybrid retrieval is **not a universal win** — whether it beats plain embeddings depends on your corpus. The table below is a real measurement: three public BEIR datasets, 150 sampled judged test queries each, a real `all-MiniLM-L6-v2` bi-encoder as the plain-embeddings baseline, this library's BM25, and the default `ms-marco-MiniLM-L-6-v2` cross-encoder.
+
+| Dataset (retrieval profile) | plain dense | + BM25 (RRF) | + BM25 + cross-encoder |
+|---|---|---|---|
+| **SciFact** — scientific claims; lexical / entity-heavy | 0.6255 | 0.6882 | **0.6990** |
+| **NFCorpus** — medical; mixed | 0.3122 | 0.3389 | **0.3514** |
+| **ArguAna** — argument paraphrase; semantic | **0.3845** | 0.3857 | 0.3331 |
+
+*nDCG@10 (graded); **bold** = best in row.*
+
+- **Use full hybrid (`rerank=True`) when relevance is lexical** — exact identifiers, codes, symbol names, rare terms, technical/code corpora. On SciFact, hybrid lifted nDCG@10 **+0.073 (+12%)** over plain embeddings, Recall@10 from 0.764 → **0.842**, and Recall@100 from 0.923 → **0.983**. (Plain dense there even *lost to pure BM25*, 0.673 — the signature of a lexical corpus.)
+- **Expect a small, safe gain on mixed corpora** — NFCorpus: **+0.039** nDCG@10.
+- **Prefer plain embeddings (or at most `rerank=False`) on semantic / paraphrase corpora** where your embedder already saturates candidate recall. On ArguAna (plain-dense Recall@100 = 0.98 — almost nothing left to recover), BM25 fusion was a statistical tie and the **default cross-encoder *reduced* nDCG@10 by −0.051**: a domain-mismatched reranker reorders good dense candidates *worse*.
+
+**Rule of thumb:** the more your relevant documents hinge on *exact tokens*, the more hybrid helps; the more they hinge on *meaning your embedder already captures*, the less BM25 adds — and a generic cross-encoder can hurt, so validate it on your own data or run `rerank=False`. When plain-dense Recall@100 is already near 1.0, fusion has no recall headroom to add.
+
+**Cost.** BM25 is an in-memory index you keep synced (`add`/`remove`); the cross-encoder adds inference latency proportional to the rerank window (`rerank_top_m`, default 50) per query. Both are opt-out.
+
+---
+
 ## Install
 
 ```bash
@@ -189,6 +211,8 @@ from fusion_recall import (
 The bundled harness (`python -m eval.run`) proves the lift by isolating each lever separately: dense-only vs dense+BM25 (RRF, no cross-encoder) vs full hybrid (RRF + cross-encoder). It reports the **BM25 lever** (`rrf − dense`) and the **cross-encoder lever** (`hybrid − rrf`) as distinct deltas.
 
 > **Caveat.** The harness's dense baseline is a **deterministic, lexical-blind stand-in**, not a real embedding model. Holding the dense ranking fixed is what makes the two levers separately measurable and reproducible — so the harness measures the *levers*, it is **not** a benchmark of any particular embedder.
+
+For real-embedder numbers on labeled datasets (and the decision rule that follows from them), see [When to use this vs. plain embeddings](#when-to-use-this-vs-plain-embeddings).
 
 ---
 
