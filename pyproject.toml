@@ -26,10 +26,10 @@ dependencies = [
 dev = ["pytest>=7", "hypothesis"]
 
 [tool.setuptools.packages.find]
-# Flat layout: ship only the import package. The test suite and the evaluation
-# harness are development artifacts and are excluded from the wheel.
+# Flat layout: ship only the import package. The test suite, the evaluation
+# harness, and the benchmarks are development artifacts, excluded from the wheel.
 include = ["fusion_recall*"]
-exclude = ["tests*", "eval*"]
+exclude = ["tests*", "eval*", "benchmarks*"]
 
 [tool.pytest.ini_options]
 # Register the slow marker (so it no longer warns) and deselect it by default, so

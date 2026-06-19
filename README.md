@@ -34,6 +34,8 @@ Hybrid retrieval is **not a universal win** — whether it beats plain embedding
 
 **Cost.** BM25 is an in-memory index you keep synced (`add`/`remove`); the cross-encoder adds inference latency proportional to the rerank window (`rerank_top_m`, default 50) per query. Both are opt-out.
 
+*Reproduce these numbers:* `python -m benchmarks.beir` downloads the BEIR datasets and runs the real models; the full table (with the BM25 baseline and Recall@10/100) is in [`benchmarks/RESULTS.md`](benchmarks/RESULTS.md).
+
 ---
 
 ## Install
