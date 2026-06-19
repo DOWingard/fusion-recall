@@ -1,0 +1,27 @@
+benchmarks/__init__.py
+  s_08a38aae05907a::t_e768d414ede271 1
+pyproject.toml
+  s_08a38aae05907a::t_6cca0cbae73809 29-30,32
+benchmarks/beir.py
+  s_08a38aae05907a::t_3000e44f118911 1-333
+README.md
+  s_08a38aae05907a::t_b283c8456c6a4e 37-38
+benchmarks/RESULTS.md
+  s_08a38aae05907a::t_801a4b236075a3 1-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "adfc618eb7c90bfd58823a69f238f116573b1fb7",
+  "prompts": {},
+  "sessions": {
+    "s_08a38aae05907a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6ddca5f2-e95e-4afa-82da-bb044e022238",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Derek Wingard <derekwingard@gmail.com>"
+    }
+  }
+}
