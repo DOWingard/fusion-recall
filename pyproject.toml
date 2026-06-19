@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fusion-recall"
+version = "0.0.0"
+description = "A drop-in hybrid-retrieval layer that lifts any dense retriever to full fusion recall: parallel BM25 lexical recall, rank fusion, and cross-encoder reranking, with a score vector for a downstream confidence/entropy gate."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "fusion-recall maintainers" }]
+keywords = ["retrieval", "hybrid-search", "bm25", "rank-fusion", "cross-encoder", "reranking"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Intended Audience :: Developers",
+]
+dependencies = [
+    "numpy>=1.24",
+    "sentence-transformers>=2.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "hypothesis"]
+
+[tool.setuptools.packages.find]
+# Flat layout: ship only the import package. The test suite and the evaluation
+# harness are development artifacts and are excluded from the wheel.
+include = ["fusion_recall*"]
+exclude = ["tests*", "eval*"]
+
+[tool.pytest.ini_options]
+# Register the slow marker (so it no longer warns) and deselect it by default, so
+# a bare `pytest` runs the offline core suite with no model download / network.
+# Opt into the model-dependent tests with `-m slow` or `-m 'slow or not slow'`.
+markers = ["slow: requires model download / network"]
+addopts = "-m 'not slow'"
